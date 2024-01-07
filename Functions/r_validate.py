@@ -1,7 +1,6 @@
 import glob
 import os
 
-import r_main
 
 
 def verifyURL(url):
@@ -26,27 +25,42 @@ def intValidate(x):
         return intValidate(temp_x)
 
 
-def loadLog():
-    if str(input("\nWould you like to resume a previous search using archived logs (Y/N)\n").lower() == 'Y'):
-        if str(input("Load archive logs (L) or manually load using PATH (P)\nPlease respond with a 'L' or 'P'").lower() == 'l'):
+def loadLog(scraper):
+    if str(input("\nWould you like to resume a previous search using archived logs (Y/N)\n")).lower() == 'y':
+        if str(input("Load archive logs (L) or manually load using PATH (P)\nPlease respond with a 'L' or 'P'\n")).lower() == 'l':
             print("\n\nLoading archive logs...\n\n")
-            print("Found Archived Logs:\n")
-            allLogs = (glob.glob("./r_logs/*/*.txt"))
+            print("Found Search Logs:\n")
+            log_directories = [x[0] for x in os.walk("./r_logs/")]
+            del log_directories[0]
+            for i in range(len(log_directories)):
+                print(f"{i+1}. {log_directories[i]}\n")
+            dirSelect = intValidate(input(f"\nPlease input a number between 1 and {len(log_directories)}\n"))
+            loadDirPath = log_directories[dirSelect-1]
+
+            print(f"\n\nLoading all logs for {loadDirPath}...\n\n")
+            allLogs = (glob.glob(f"{loadDirPath}/*.txt"))
             for i in range(len(allLogs)):
                 print(f"{i+1}. {allLogs[i]}\n")
-            logSelect = intValidate(input(f"\nPlease input a number between 1 and {len(allLogs)}"))
+            logSelect = intValidate(input(f"\nPlease input a number between 1 and {len(allLogs)}\n"))
             loadLogPath = allLogs[logSelect-1]
 
-        elif str(input("\nLoad archive logs (L) or manually load using PATH (P)\nPlease respond with a 'L' or 'P'\n").lower() == 'p'):
+        elif str(input("\nLoad archive logs (L) or manually load using PATH (P)\nPlease respond with a 'L' or 'P'\n")).lower() == 'p':
             UIPATH = input("Please input the file PATH for the log, you'd like to use")
-            loadLogPath = pathValidateLoad(UIPATH)
+            loadLogPath = pathValidateLoad(scraper, UIPATH)
 
         else:
             print("Please respond with a valid input and try again")
             return None
         if os.path.exists(loadLogPath):
+            if "ALog" in loadLogPath:
+                print("Log A Detected, Initiating Process B")
+                scraper.logA = True
+            if "BLog" in loadLogPath:
+                print("Log B Detected, Initiating Process C")
+                scraper.logB = True
             loadedLogFile = open(loadLogPath, "r")
-            r_main.profile_urls = loadedLogFile.readlines()
+            scraper.profile_urls = loadedLogFile.readlines()
+            return True
 
 
 
@@ -54,12 +68,12 @@ def loadLog():
         return False
 
 
-def pathValidateLoad(path):
+def pathValidateLoad(scraper, path):
     if os.path.exists(path):
         loadedLogFile = open(path)
         loadedLog = loadedLogFile.readlines()
         return loadedLog
     else:
         print("\nThe PATH you entered didn't direct to a file or directory, please try again.")
-        return loadLog()
+        return loadLog(scraper)
 

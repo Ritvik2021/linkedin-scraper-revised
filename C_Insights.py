@@ -61,12 +61,16 @@ def insights(linkedIn_profiles):
 
         final_result.append(insight)
 
+    with open('./Data/06-01-24_M0101_search_results.json', 'w',
+              encoding="utf-8-sig") as file:
+        file.write(json.dumps(final_result, ensure_ascii=False))
+        file.close()
+
+    print(
+        f'\nProfile insight generation procedure done. To continue running the LinkedIn scraper process, please enter \"poetry run python D_Make_File.py\" in the terminal.\nRemember to supply the folder name in the next procedure:\n{os.environ.get("linkedin_search_folder_name")}\n')
+
     return json.dumps(final_result, ensure_ascii=False)
  
 '''
-with open(f'Data/{date}_{os.environ["linkedin_search_folder_name"]}/M0101_search_results.json', 'w', encoding="utf-8-sig") as file:
-    file.write(json.dumps(redo_profiles, ensure_ascii=False))
-    file.close()
 
-print(f'\nProfile insight generation procedure done. To continue running the LinkedIn scraper process, please enter \"poetry run python D_Make_File.py\" in the terminal.\nRemember to supply the folder name in the next procedure:\n{os.environ.get("linkedin_search_folder_name")}\n')
 '''

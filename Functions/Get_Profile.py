@@ -6,7 +6,7 @@ import json
 
 def get_id(html):
     soup = BeautifulSoup(html, "html5lib")
-    id_section = soup.find('section', {'class': 'artdeco-card ember-view pv-top-card'}) 
+    id_section = soup.find('section', {'class': 'artdeco-card'})
 
     return id_section['data-member-id']
 

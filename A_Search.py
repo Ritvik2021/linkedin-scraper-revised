@@ -6,7 +6,6 @@ import json
 import Functions.Utilities as Utilities
 from bs4 import BeautifulSoup
 
-import r_main as main
 
 '''
 login_user =  'g.iademarco@yahoo.it' or "jenna.ahn71@gmail.com"
@@ -86,18 +85,18 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
 # search("https://www.linkedin.com/search/results/people/?keywords=tutor&origin=SWITCH_SEARCH_VERTICAL&sid=YYr", 10,
 #        "ritvik.2021@gmail.com", "XzY@12Iq9746bwC1")
 
-def performSearch(search_url, linkedin_length, login_user, login_pass, driver):
+def performSearch(scraper):
     try:
-        return search(search_url, linkedin_length, login_user, login_pass, driver)
+        return search(scraper.search_url, scraper.search_len, scraper.search_user, scraper.search_pass, scraper.driver)
     except:
         tempInput = input(
             "Step A: Unsuccessful Search, would you like to try again? (Y-yes, N-no, x-change parameters)")
         if tempInput.lower() == 'y':
-            return performSearch(search_url, linkedin_length, login_user, login_pass, driver)
+            return performSearch(scraper)
         elif tempInput.lower() == 'n':
             return None
         elif tempInput.lower() == 'x':
-            main.__init__()
-            return None
+            scraper.initUI()
+            performSearch(scraper)
         else:
             return None

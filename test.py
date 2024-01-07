@@ -1,4 +1,6 @@
+import csv
 import glob
+import json
 import os
 from datetime import datetime
 
@@ -27,4 +29,33 @@ search_name = "test0"
 #
 #     print(loadedLog)
 
-print(glob.glob("./r_logs/*/*.txt"))
+
+# with open('./Data/06-01-24_M0101_search_results.json', 'w',
+#           encoding="utf-8-sig") as file:
+#     file.write(json.dumps(final_result, ensure_ascii=False))
+#     file.close()
+
+
+with open('./Data/06-01-24_M0101_search_results.json', 'r', encoding="utf-8-sig") as file:
+    x = file.read()
+    y = json.loads(x)
+    print(len(y))
+    file.close()
+
+# with open("./Data/final_v1.csv", "w", encoding="utf-8-sig") as out:
+#     out.write("Name,Languages,Primary institution,Years of experience,International school?,School country,"
+#               "School primary curriculum,More Details,Interested in mentoring?,Location\n")
+#     for each in y:
+#         out.write(f"{each['name']},{each['languages']},{each['primaryInstitution']},{each['yearsOfExperience']},{each['internationalSchool']},{each['schoolCountry']},{each['schoolPrimaryCurriculum']},{each['moreDetails']},{each['interestedInMentoring']},{each['location']}\n")
+#     out.close()
+
+with open("./Data/final_v1.csv", 'w', newline='', encoding="utf-8") as file:
+    writer = csv.writer(file)
+    fields = ["Name", "Languages", "Primary institution", "Years of experience", "International school?",
+              "School country", "School primary curriculum", "More Details", "Interested in mentoring?", "Location"]
+    writer.writerow(fields)
+    for each in y:
+        writer.writerow([each["name"], each["languages"], each["primaryInstitution"], each["yearsOfExperience"],
+                         each["internationalSchool"], each["schoolCountry"], each["schoolPrimaryCurriculum"],
+                         each["moreDetails"], each["interestedInMentoring"], each["location"]])
+    file.close()
