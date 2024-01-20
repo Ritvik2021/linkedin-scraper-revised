@@ -49,6 +49,11 @@ def getProfiles(scraper):
             time.sleep(10)
         except:
             linkedIn_profiles.append('Error scrapping this profile: ' + each)
+            print('Error scrapping this profile: ' + each)
+            print(traceback.format_exc())
+            print("\n\n")
+            print(sys.exc_info()[2])
+            print("\n\n")
             # print('Error scrapping this profile: ' + each)
 
         # print('Profile number: ' + str(counter))

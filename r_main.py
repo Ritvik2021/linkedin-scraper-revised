@@ -27,13 +27,13 @@ class linkedIn_Scraper:
         self.driver = Utilities.init_Selenium_driver()
 
         # self.initUI()
-        # self.search_name = "test_v1"
-        # self.search_url = ("https://www.linkedin.com/search/results/people/?geoUrn=%5B%22102299470%22%5D&keywords"
-        #                    "=%224th%20year%22%20medical%20%22international%20baccalaureate%22&origin"
-        #                    "=GLOBAL_SEARCH_HEADER")
-        # self.search_len = 10
-        # self.search_user = "Ritvik.2021@gmail.com"
-        # self.search_pass = "XzY@12Iq9746bwC1"
+        self.search_name = "test_v1"
+        self.search_url = ("https://www.linkedin.com/search/results/people/?geoUrn=%5B%22102299470%22%5D&keywords"
+                           "=%224th%20year%22%20medical%20%22international%20baccalaureate%22&origin"
+                           "=GLOBAL_SEARCH_HEADER")
+        self.search_len = 10
+        self.search_user = "Ritvik.2021@gmail.com"
+        self.search_pass = "XzY@12Iq9746bwC1"
 
         if self.logA:
             print(self.profile_urls)
