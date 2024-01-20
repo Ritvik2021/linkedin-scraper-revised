@@ -69,7 +69,7 @@ def insights(linkedIn_profiles):
     print(
         f'\nProfile insight generation procedure done. To continue running the LinkedIn scraper process, please enter \"poetry run python D_Make_File.py\" in the terminal.\nRemember to supply the folder name in the next procedure:\n{os.environ.get("linkedin_search_folder_name")}\n')
 
-    return json.dumps(final_result, ensure_ascii=False)
+    return final_result
  
 '''
 

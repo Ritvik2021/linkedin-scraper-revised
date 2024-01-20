@@ -7,6 +7,7 @@ from Functions import Utilities
 from Functions import r_validate
 from datetime import datetime
 
+
 class linkedIn_Scraper:
 
     def __init__(self):
@@ -79,12 +80,47 @@ class linkedIn_Scraper:
                           "Location"]
                 writer.writerow(fields)
                 for each in cout:
+                    try:
+                        print(each["name"])
+                        print(each["languages"])
+                        print(each["primaryInstitution"])
+                        print(each["yearsOfExperience"])
+                        print(each["internationalSchool"])
+                        print(each["schoolCountry"])
+                        print(each["schoolPrimaryCurriculum"])
+                        print(each["moreDetails"])
+                        print(each["interestedInMentoring"])
+                        print(each["location"])
+                    except:
+                        if not each["name"]:
+                            each["name"] = ''
+                        elif not each["languages"]:
+                            each["languages"] = ''
+                        elif not each["primaryInstitution"]:
+                            each["primaryInstitution"] = ''
+                        elif not each["yearsOfExperience"]:
+                            each["yearsOfExperience"] = ''
+                        elif not each["internationalSchool"]:
+                            each["internationalSchool"] = ''
+                        elif not each["schoolCountry"]:
+                            each["schoolCountry"] = ''
+                        elif not each[["schoolPrimaryCurriculum"]]:
+                            each[["schoolPrimaryCurriculum"]] = ''
+                        elif not each["moreDetails"]:
+                            each["moreDetails"] = ''
+                        elif not each["interestedInMentoring"]:
+                            each["interestedInMentoring"] = ''
+                        elif not each["location"]:
+                            each["location"] = ''
+
+                    print([each["name"], each["languages"], each["primaryInstitution"], each["yearsOfExperience"],
+                           each["internationalSchool"], each["schoolCountry"], each["schoolPrimaryCurriculum"],
+                           each["moreDetails"], each["interestedInMentoring"], each["location"]])
                     writer.writerow(
                         [each["name"], each["languages"], each["primaryInstitution"], each["yearsOfExperience"],
                          each["internationalSchool"], each["schoolCountry"], each["schoolPrimaryCurriculum"],
                          each["moreDetails"], each["interestedInMentoring"], each["location"]])
                 file.close()
-
 
             # for each in profiles:
             #     print(each)
