@@ -21,45 +21,54 @@ def personal_details(html):
         each.decompose()
 
     name_tag = soup.find('h1')
-    personal_details = name_tag.parent.parent.parent.parent.parent
+    name = name_tag.text
+    education = ''
+    company = ''
 
+    personal_details = name_tag.parent.parent.parent.parent.parent
     personal_details_separated = personal_details.findChildren(recursive=False)
 
-    name_and_occupation = personal_details_separated[0].findChildren(recursive=False)
 
-    name = name_tag.text
-    occupation = personal_details.findNext('div').findAll('div')[1].text
 
     if personal_details.find('ul'):
 
         try:
-            company_and_uni = personal_details.find('ul').findAll('li')
-            location = personal_details.findAll('div')[1].findNext('span').text
-
-            company = company_and_uni[0].text
-            education = company_and_uni[1].text
+            headline = personal_details_separated[0].findChildren(recursive=False)[1].text
+            distance = personal_details_separated[0].find('span', {'class': 'dist-value'}).text
+            location = personal_details_separated[2].findAll('span')[0].text
+            display = personal_details_separated[1].findAll('li')
+            for each in display:
+                txt = each.find("button")["aria-label"]
+                if "Current company:" in txt:
+                    txt = txt.replace("Current company:", "").replace(". Click to skip to experience card", "").strip()
+                    company = txt
+                elif "Education:" in txt:
+                    txt = txt.replace("Education:", "").replace(". Click to skip to education card", "").strip()
+                    education = txt
         except:
-            education = ''
-            company = ''
+            headline = ''
+            distance = ''
             location = ''
+            print(name)
             print(traceback.format_exc())
             print("\n\n")
             print(sys.exc_info()[2])
             print("\n\n")
 
-        all_details = name + occupation + company + education + location
+        all_details = name + headline + distance + company + education + location
     else:
 
-        location = personal_details_separated[1].findChildren(recursive=False)
-        location = location[0].text
+        headline = personal_details_separated[0].findChildren(recursive=False)[1].text
+        distance = personal_details_separated[0].find('span', {'class': 'dist-value'}).text
+        location = personal_details_separated[2].findAll('span')[0].text
 
-        all_details = name + occupation + location
+        all_details = name + headline + distance + location
 
     all_details = all_details.split('\n')
     all_details = [each.strip() for each in all_details]
     all_details = list(filter(None, all_details))
 
-    return (all_details)
+    return all_details
 
 
 def languages_list(html):

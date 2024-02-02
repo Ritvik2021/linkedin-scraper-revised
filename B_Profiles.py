@@ -20,21 +20,16 @@ def getProfiles(scraper):
         try:
             scraper.driver.get(each)
 
-            time.sleep(10)
+            time.sleep(5)
 
             html = scraper.driver.page_source
             summary = Get.personal_details(html)
             potential_mentor = Insights.interested_mentoring(html)
             languages_spoken = Get.languages_list(html)
             profile_id = Get.get_id(html)
-
-            time.sleep(2)
-
             schools = Get.education_list(html)
-
-            time.sleep(2)
-
             work_exp = Get.work_exp_list(html)
+
             profile = {
                 'Id': profile_id,
                 'summary': summary,
@@ -45,8 +40,6 @@ def getProfiles(scraper):
                 'LinkedIn url': each
             }
             linkedIn_profiles.append(profile)
-
-            time.sleep(10)
         except:
             linkedIn_profiles.append('Error scrapping this profile: ' + each)
             print('Error scrapping this profile: ' + each)

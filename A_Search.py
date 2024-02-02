@@ -6,7 +6,6 @@ import json
 import Functions.Utilities as Utilities
 from bs4 import BeautifulSoup
 
-
 '''
 login_user =  'g.iademarco@yahoo.it' or "jenna.ahn71@gmail.com"
 login_pass = 'Millie2020' or "Millie2022!"
@@ -14,11 +13,54 @@ sample search: https://www.linkedin.com/search/results/people/?keywords=%22under
 '''
 
 
+def login(scraper):
+    print("init successful")
+
+    scraper.driver.get("https://www.linkedin.com/login")
+    time.sleep(1)
+
+    scraper.driver.find_element(By.NAME, 'session_key').send_keys(scraper.search_user)
+    scraper.driver.find_element(By.NAME, 'session_password').send_keys(scraper.search_pass)
+    scraper.driver.find_element(By.XPATH, "//button[@class='btn__primary--large from__button--floating']").click()
+
+    print("Attempting log in. Checking if verification code is necessary.")
+
+    time.sleep(
+        15)  # Must wait for a CAPTCHA page to load. This takes a while, ie. more than 5 seconds. But it cannot be too long otherwise linkedin will direct the browser back to the standard login page.
+
+    search_page: str = scraper.driver.find_element(By.XPATH, "//html").get_attribute('outerHTML')
+    soup = BeautifulSoup(search_page, "html5lib")
+    title = str(soup.find('title'))
+    input_exist = soup.find('input', {'class': 'form__input--text input_verification_pin'})
+    captcha_exist = soup.find('form', {'id': 'captcha-challenge'})
+
+    time.sleep(10)
+    if 'Verification' in title and input_exist and not captcha_exist:
+        print('AWAIT_PIN')
+        for _ in range(5):
+            inp = input()
+            if inp.startswith("RESEND_PIN"):
+                pass
+            elif inp.startswith("SUBMIT_PIN"):
+                verification_code = inp[len("SUBMIT_PIN") + 1:]
+                scraper.driver.find_element(By.ID, 'input__email_verification_pin').send_keys(verification_code)
+                scraper.driver.find_element(By.ID, 'email-pin-submit-button').click()
+                time.sleep(15)
+            else:
+                raise Exception("Incorrect stdin format")
+        else:
+            raise Exception("Too many email resends")
+    elif 'Verification' in title and captcha_exist and not input_exist:
+        raise Exception("CAPTCHA detected")
+
+    print('LOGGED_IN')
+
+
 def search(search_url, linkedin_length, login_user, login_pass, driver):
     print("init successful")
 
     driver.get("https://www.linkedin.com/login")
-    time.sleep(1)
+    time.sleep(5)
 
     driver.find_element(By.NAME, 'session_key').send_keys(login_user)
     driver.find_element(By.NAME, 'session_password').send_keys(login_pass)
@@ -27,7 +69,7 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
     print("Attempting log in. Checking if verification code is necessary.")
 
     time.sleep(
-        15)  # Must wait for a CAPTCHA page to load. This takes a while, ie. more than 5 seconds. But it cannot be too long otherwise linkedin will direct the browser back to the standard login page.
+        5)  # Must wait for a CAPTCHA page to load. This takes a while, ie. more than 5 seconds. But it cannot be too long otherwise linkedin will direct the browser back to the standard login page.
 
     search_page: str = driver.find_element(By.XPATH, "//html").get_attribute('outerHTML')
     soup = BeautifulSoup(search_page, "html5lib")
@@ -35,7 +77,6 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
     input_exist = soup.find('input', {'class': 'form__input--text input_verification_pin'})
     captcha_exist = soup.find('form', {'id': 'captcha-challenge'})
 
-    time.sleep(10)
     if 'Verification' in title and input_exist and not captcha_exist:
         print('AWAIT_PIN')
         for _ in range(5):
@@ -58,10 +99,9 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
 
     print('You have successfully logged in. Searching the provided link.')
     driver.get(search_url)
-    time.sleep(10)
+    time.sleep(5)
 
     search_page: str = driver.find_element(By.XPATH, "//html").get_attribute('outerHTML')
-    time.sleep(5)
 
     # print(search_page)
 
@@ -73,8 +113,7 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
         sys.exit("No results found")
     else:
         # print('Search results found. Scrapping links.')
-        list_of_urls = []
-        urls = Utilities.get_urls(driver, 0, linkedin_length, list_of_urls)
+        urls = Utilities.get_urls(driver, 0, linkedin_length)
 
     urls = list(set(urls))
 
