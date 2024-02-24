@@ -27,6 +27,7 @@ def personal_details(html):
 
     personal_details = name_tag.parent.parent.parent.parent.parent
     personal_details_separated = personal_details.findChildren(recursive=False)
+    personal_details_divs = personal_details.findAll("div")
 
 
 
@@ -58,9 +59,9 @@ def personal_details(html):
         all_details = name + headline + distance + company + education + location
     else:
 
-        headline = personal_details_separated[0].findChildren(recursive=False)[1].text
-        distance = personal_details_separated[0].find('span', {'class': 'dist-value'}).text
-        location = personal_details_separated[2].findAll('span')[0].text
+        headline = personal_details_divs[0].findChildren(recursive=False)[1].text
+        distance = personal_details_divs[0].find('span', {'class': 'dist-value'}).text
+        location = personal_details_divs[1].findAll('span')[0].text
 
         all_details = name + headline + distance + location
 

@@ -44,7 +44,7 @@ class linkedIn_Scraper:
         #     self.logEntries = open(f"r_logs/{self.search_name}/logEntries.txt", "w+")
         #     self.logEntries.write("Timestamp|status\n")
         #
-        #     self.start()
+        self.start()
 
     def initUI(self):
 
@@ -128,23 +128,26 @@ class linkedIn_Scraper:
                     # ["LinkedIn URL","Full Name","Distance","Headline","First Name","Last Name","Location",
                     # "Other Locations","Undergrad","Other Schools","Yrs Exp","Int HS?","Languages"]
 
-                    print([bout[i]["LinkedIn url"]
-                              , bout[i]["summary"][0]
-                              , bout[i]["summary"][2]
-                              , bout[i]["summary"][1]
-                              , bout[i]["summary"][0].split(" ")[0]
-                              , bout[i]["summary"][0].split(" ")[-1]
-                              , bout[i]["summary"][-1]
-                              , Utilities.location_strip(bout[i]["work_exp"][3],bout[i]["summary"][-1])
-                              , cout[i]["primaryInstitution"]
-                              , Utilities.location_strip(bout[i]["schools"][0],cout[i]["primaryInstitution"])
-                              , cout[i]["yearsOfExperience"],cout[i]["internationalSchool"]
-                              , bout[i]["languages_spoken"]])
-                    writer.writerow(
-                        [bout[i]["LinkedIn url"], bout[i]["summary"][0], bout[i]["summary"][2], bout[i]["summary"][1],
-                         bout[i]["summary"][0].split(" ")[0], bout[i]["summary"][0].split(" ")[-1],bout[i]["summary"][-1],
-                         Utilities.location_strip(bout[i]["work_exp"][3],bout[i]["summary"][-1]), cout[i]["primaryInstitution"], Utilities.location_strip(bout[i]["schools"][0],cout[i]["primaryInstitution"]), cout[i]["yearsOfExperience"],cout[i]["internationalSchool"],
-                         ", ".join( repr(e) for e in bout[i]["languages_spoken"] )])
+                    # print([bout[i]["LinkedIn url"]
+                    #           , bout[i]["summary"][0]
+                    #           , bout[i]["summary"][2]
+                    #           , bout[i]["summary"][1]
+                    #           , bout[i]["summary"][0].split(" ")[0]
+                    #           , bout[i]["summary"][0].split(" ")[-1]
+                    #           , bout[i]["summary"][-1]
+                    #           , Utilities.location_strip(bout[i]["work_exp"][3],bout[i]["summary"][-1])
+                    #           , cout[i]["primaryInstitution"]
+                    #           , Utilities.location_strip(bout[i]["schools"][0],cout[i]["primaryInstitution"])
+                    #           , cout[i]["yearsOfExperience"],cout[i]["internationalSchool"]
+                    #           , bout[i]["languages_spoken"]])
+                    try:
+                        writer.writerow(
+                            [bout[i]["LinkedIn url"], bout[i]["summary"][0], bout[i]["summary"][2], bout[i]["summary"][1],
+                             bout[i]["summary"][0].split(" ")[0], bout[i]["summary"][0].split(" ")[-1],bout[i]["summary"][-1],
+                             Utilities.location_strip(bout[i]["work_exp"][3],bout[i]["summary"][-1]), cout[i]["primaryInstitution"], Utilities.location_strip(bout[i]["schools"][0],cout[i]["primaryInstitution"]), cout[i]["yearsOfExperience"],cout[i]["internationalSchool"],
+                             ", ".join( repr(e) for e in bout[i]["languages_spoken"] )])
+                    except:
+                        print("DOnes")
                 file.close()
 
             # for each in profiles:
