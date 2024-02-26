@@ -19,10 +19,11 @@ def init_Selenium_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument("--no-sandbox")
-    # ser = Service(ChromeDriverManager().install())
+    # service = Service(ChromeDriverManager().install())
+    service = Service("./chromedriver")
     chrome_options.add_argument \
         ("--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36")
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+    driver = webdriver.Chrome(service=service,options=chrome_options)
     return driver
 
 
