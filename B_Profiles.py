@@ -71,6 +71,7 @@ def profiles(list_of_profiles, login_user, login_pass):
     linkedIn_profiles = []
 
     for counter, each in enumerate(urls):
+        print(f"Searching Profiles : ~{round(counter/len(urls))}%")
         try:
             driver.get(each)
 

@@ -112,7 +112,7 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
     if "No results found" in search_results.text:
         sys.exit("No results found")
     else:
-        # print('Search results found. Scrapping links.')
+        print('\nSearch results found. Scrapping links.\n')
         urls = Utilities.get_urls(driver, 0, linkedin_length,[])
 
     urls = list(set(urls))

@@ -31,6 +31,8 @@ def get_urls(driver, length, max_len, collection):
     if length >= max_len:
         return collection
 
+    print(f"Collecting URLs : ~{round(length/max_len)}%")
+
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(2)
 
