@@ -26,8 +26,7 @@ def init_Selenium_driver():
     return driver
 
 
-def get_urls(driver, length, max_len):
-    collection = []
+def get_urls(driver, length, max_len, collection):
     if length >= max_len:
         return collection
 
@@ -40,7 +39,11 @@ def get_urls(driver, length, max_len):
 
     search_results_container = soup.find('div', {'class': 'search-results-container'})
 
-    search_results = search_results_container.findAll('ul')[1]
+    tmp = search_results_container.findAll('ul')
+    if collection:
+        search_results = search_results_container.findAll('ul')[0]
+    else:
+        search_results = search_results_container.findAll('ul')[1]
 
     results_list = search_results.findChildren('li', recursive=False)
 
@@ -57,8 +60,8 @@ def get_urls(driver, length, max_len):
         # print("Found next button")
         collection = get_urls(driver, len(collection), max_len, collection)
     except Exception as e:
-        # print(e)
-        # print('No more pages. Search is done')
+        print(e)
+        print('Search Length exceeded search Results. No more pages. Search has finished Successfully')
         return collection
 
     return collection
