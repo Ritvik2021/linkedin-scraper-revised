@@ -87,7 +87,8 @@ class linkedIn_Scraper:
             cout = C.insights(bout)
             print(cout)
             print("\n")
-            with open("./Data/final_v1.csv", 'w', newline='', encoding="utf-8") as file:
+            date_now = str(datetime.strftime(datetime.now(), '%d-%m-%y'))
+            with open(f"./Data/{date_now}_{self.search_name}.csv", 'w', newline='', encoding="utf-8") as file:
                 writer = csv.writer(file)
                 fields = ["LinkedIn URL", "Full Name", "Distance", "Headline", "First Name", "Last Name", "Location",
                           "Other Locations", "Undergrad", "Other Schools", "Yrs Exp", "Int HS?", "Languages"]
