@@ -136,6 +136,6 @@ def performSearch(scraper):
             return None
         elif tempInput.lower() == 'x':
             scraper.initUI()
-            performSearch(scraper)
+            return performSearch(scraper)
         else:
             return None
