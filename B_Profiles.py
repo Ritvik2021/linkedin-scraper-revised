@@ -17,6 +17,8 @@ def getProfiles(scraper):
     linkedIn_profiles = []
 
     for counter, each in enumerate(urls):
+        if counter%10==0:
+            print(f"Searching Profiles : ~{round((counter / len(urls)) * 100)}%")
         try:
             scraper.driver.get(each)
 
