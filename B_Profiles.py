@@ -1,3 +1,4 @@
+import copy
 import sys
 import time
 import datetime
@@ -15,10 +16,16 @@ def getProfiles(scraper):
     urls = scraper.profile_urls
 
     linkedIn_profiles = []
-
+    time_taken = []
+    old = datetime.datetime.now()
     for counter, each in enumerate(urls):
-        if counter%10==0:
-            print(f"Searching Profiles : ~{round((counter / len(urls)) * 100)}%")
+        if (counter%10 == 0) and (counter != 0):
+            print(f"")
+            new = datetime.datetime.now()
+            time_taken.append((new - old))
+            current_avg = sum(time_taken, datetime.timedelta(0)) / len(time_taken)
+            print(f"Searching Profiles : ~{round((counter / len(urls)) * 100)}% \t Estimated time remaining: {current_avg * (len(urls) - counter)}")
+            old = copy.deepcopy(new)
         try:
             scraper.driver.get(each)
 

@@ -28,12 +28,12 @@ class linkedIn_Scraper:
 
         self.driver = Utilities.init_Selenium_driver()
 
-        # self.initUI()
-        self.search_name = "test_v1"
-        self.search_url ="https://www.linkedin.com/search/results/people/?geoUrn=%5B%22103644278%22%5D&industry=%5B%221594%22%2C%226%22%2C%224%22%5D&keywords=AI%20computer%20science&network=%5B%22F%22%2C%22S%22%5D&origin=FACETED_SEARCH&schoolFilter=%5B%221792%22%2C%222517%22%2C%221646%22%2C%221503%22%2C%22157343%22%5D&sid=3P~"
-        self.search_len = 35
-        self.search_user = "Ritvik.2021@gmail.com"
-        self.search_pass = "XzY@12Iq9746bwC1"
+        self.initUI()
+        # self.search_name = "test_v1"
+        # self.search_url ="https://www.linkedin.com/search/results/people/?geoUrn=%5B%22103644278%22%5D&industry=%5B%221594%22%2C%226%22%2C%224%22%5D&keywords=AI%20computer%20science&network=%5B%22F%22%2C%22S%22%5D&origin=FACETED_SEARCH&schoolFilter=%5B%221792%22%2C%222517%22%2C%221646%22%2C%221503%22%2C%22157343%22%5D&sid=3P~"
+        # self.search_len = 35
+        # self.search_user = "Ritvik.2021@gmail.com"
+        # self.search_pass = "XzY@12Iq9746bwC1"
 
         # if self.logA:
         #     print(self.profile_urls)
