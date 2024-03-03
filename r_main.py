@@ -20,20 +20,21 @@ class linkedIn_Scraper:
         self.driver = None
         self.logEntries = None
         self.profile_urls = None
+        self.bypasscollection = None
         # self.logA = False
         # self.logB = False
 
         if not os.path.exists("r_logs"):
             os.makedirs("r_logs")
 
-        self.driver = Utilities.init_Selenium_driver()
 
-        # self.initUI()
-        self.search_name = "test_v1"
-        self.search_url ="https://www.linkedin.com/search/results/people/?geoUrn=%5B%22103644278%22%5D&industry=%5B%221594%22%2C%226%22%2C%224%22%5D&keywords=AI%20computer%20science&network=%5B%22F%22%2C%22S%22%5D&origin=FACETED_SEARCH&schoolFilter=%5B%221792%22%2C%222517%22%2C%221646%22%2C%221503%22%2C%22157343%22%5D&sid=3P~"
-        self.search_len = 35
-        self.search_user = "Ritvik.2021@gmail.com"
-        self.search_pass = "XzY@12Iq9746bwC1"
+
+        self.initUI()
+        # self.search_name = "test_v1"
+        # self.search_url ="https://www.linkedin.com/search/results/people/?geoUrn=%5B%22103644278%22%5D&industry=%5B%221594%22%2C%226%22%2C%224%22%5D&keywords=AI%20computer%20science&network=%5B%22F%22%2C%22S%22%5D&origin=FACETED_SEARCH&schoolFilter=%5B%221792%22%2C%222517%22%2C%221646%22%2C%221503%22%2C%22157343%22%5D&sid=3P~"
+        # self.search_len = 35
+        # self.search_user = "Ritvik.2021@gmail.com"
+        # self.search_pass = "XzY@12Iq9746bwC1"
 
         # if self.logA:
         #     print(self.profile_urls)
@@ -45,6 +46,7 @@ class linkedIn_Scraper:
         #     self.logEntries = open(f"r_logs/{self.search_name}/logEntries.txt", "w+")
         #     self.logEntries.write("Timestamp|status\n")
         #
+        self.driver = Utilities.init_Selenium_driver()
         self.start()
 
     def saveLogin(self):
@@ -97,6 +99,12 @@ class linkedIn_Scraper:
 
         self.search_len = input("\nPlease enter the LinkedIn search length. Recommended length is below 150. \n")
         self.search_len = r_validate.intValidate(self.search_len)
+
+        if r_validate.pageInput():
+            self.bypasscollection = True
+        else:
+            self.bypasscollection = False
+
         self.loginINIT()
 
         self.search_name = input(
@@ -136,8 +144,19 @@ class linkedIn_Scraper:
                           "Other Locations", "Undergrad", "Other Schools", "Yrs Exp", "Int HS?", "Languages"]
                 writer.writerow(fields)
                 for i in range(len(cout)):
-                    if bout[i]["languages_spoken"] == 'No languages':
-                        bout[i]["languages_spoken"] = ""
+                    try:
+                        if bout[i]["languages_spoken"] == 'No languages':
+                            bout[i]["languages_spoken"] = ""
+                    except:
+                        bout[i] = {
+                            'Id': None,
+                            'summary': None,
+                            'potential_mentor': None,
+                            'languages_spoken': None,
+                            'schools': None,
+                            'work_exp': None,
+                            'LinkedIn url': None
+                        }
                 #     try:
                 #         print(cout[i]["languages"])
                 #         print(cout[i]["primaryInstitution"])

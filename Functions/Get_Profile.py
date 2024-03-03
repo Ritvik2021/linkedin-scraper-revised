@@ -8,10 +8,13 @@ import json
 # Get data
 
 def get_id(html):
-    soup = BeautifulSoup(html, "html5lib")
-    id_section = soup.find('section', {'class': 'artdeco-card'})
+    try:
+        soup = BeautifulSoup(html, "html5lib")
+        id_section = soup.find('section', {'class': 'artdeco-card'})
 
-    return id_section['data-member-id']
+        return id_section['data-member-id']
+    except:
+        return str(0)
 
 
 def personal_details(html):

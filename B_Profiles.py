@@ -27,6 +27,7 @@ def getProfiles(scraper):
             html = scraper.driver.page_source
             summary = Get.personal_details(html)
             potential_mentor = Insights.interested_mentoring(html)
+            languages_spoken = ""
             languages_spoken = Get.languages_list(html)
             profile_id = Get.get_id(html)
             schools = Get.education_list(html)

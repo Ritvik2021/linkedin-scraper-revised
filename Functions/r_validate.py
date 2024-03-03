@@ -77,3 +77,16 @@ def pathValidateLoad(scraper, path):
         print("\nThe PATH you entered didn't direct to a file or directory, please try again.")
         return loadLog(scraper)
 
+
+def pageInput():
+    in_txt = input("\nDoes this search begin on a page other than 1? (y/n)\n")
+    if in_txt.lower() == "y":
+        in_txt = input("\nWhat page does this search begin on?\n")
+        start_page = intValidate(in_txt)
+        return start_page
+    elif in_txt.lower() == 'n':
+        return None
+    else:
+        print("\nPlease try again\n")
+        return pageInput()
+

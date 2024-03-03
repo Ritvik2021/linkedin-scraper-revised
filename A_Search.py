@@ -1,6 +1,8 @@
 import sys
 import os
 import time
+import traceback
+
 from selenium.webdriver.common.by import By
 import json
 import Functions.Utilities as Utilities
@@ -56,7 +58,7 @@ def login(scraper):
     print('LOGGED_IN')
 
 
-def search(search_url, linkedin_length, login_user, login_pass, driver):
+def search(search_url, linkedin_length, login_user, login_pass, driver, bypasscollection):
     print("init successful")
 
     driver.get("https://www.linkedin.com/login")
@@ -77,6 +79,8 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
     input_exist = soup.find('input', {'class': 'form__input--text input_verification_pin'})
     captcha_exist = soup.find('form', {'id': 'captcha-challenge'})
 
+    time.sleep(60)
+
     if 'Verification' in title and input_exist and not captcha_exist:
         print('AWAIT_PIN')
         for _ in range(5):
@@ -93,7 +97,13 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
         else:
             raise Exception("Too many email resends")
     elif 'Verification' in title and captcha_exist and not input_exist:
-        raise Exception("CAPTCHA detected")
+        print("\nCAPTCHA detected. 180 seconds to complete without headless"
+              "\nIf this error shows up, please don't make any future runs"
+              "as there is a captcha, and it may risk the account getting restricted"
+              ".\nPlease use a browser and login with the creds on Linkedin, then Kill and"
+              " Rerun the search")
+        # time.sleep(180)
+
 
     print('LOGGED_IN')
 
@@ -113,7 +123,7 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
         sys.exit("No results found")
     else:
         print('\nSearch results found. Scrapping links.\n')
-        urls = Utilities.get_urls(driver, 0, linkedin_length,[])
+        urls = Utilities.get_urls(driver, 0, linkedin_length, [], bypasscollection)
 
     urls = list(set(urls))
 
@@ -126,8 +136,12 @@ def search(search_url, linkedin_length, login_user, login_pass, driver):
 
 def performSearch(scraper):
     try:
-        return search(scraper.search_url, scraper.search_len, scraper.search_user, scraper.search_pass, scraper.driver)
+        return search(scraper.search_url, scraper.search_len, scraper.search_user, scraper.search_pass, scraper.driver,
+                      scraper.bypasscollection)
     except:
+        print(traceback.format_exc())
+        print("\n\n\n")
+        print(sys.exc_info()[2])
         tempInput = input(
             "Step A: Unsuccessful Search, would you like to try again? (Y-yes, N-no, x-change parameters)")
         if tempInput.lower() == 'y':

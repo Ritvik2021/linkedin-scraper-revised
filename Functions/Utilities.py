@@ -12,7 +12,7 @@ import os
 # Utilities
 def init_Selenium_driver():
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     WINDOW_SIZE = "1920,1080"
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
@@ -27,7 +27,7 @@ def init_Selenium_driver():
     return driver
 
 
-def get_urls(driver, length, max_len, collection):
+def get_urls(driver, length, max_len, collection, bypasscollection):
     if length >= max_len:
         return collection
 
@@ -43,8 +43,9 @@ def get_urls(driver, length, max_len, collection):
     search_results_container = soup.find('div', {'class': 'search-results-container'})
 
     tmp = search_results_container.findAll('ul')
-    if collection:
+    if collection or bypasscollection:
         search_results = search_results_container.findAll('ul')[0]
+        bypasscollection = False
     else:
         search_results = search_results_container.findAll('ul')[1]
 
@@ -61,7 +62,7 @@ def get_urls(driver, length, max_len, collection):
         driver.find_element(By.XPATH, "//button[@aria-label='Next']").click()
         time.sleep(5)
         # print("Found next button")
-        collection = get_urls(driver, len(collection), max_len, collection)
+        collection = get_urls(driver, len(collection), max_len, collection, bypasscollection)
     except Exception as e:
         print(e)
         print('Search Length exceeded search Results. No more pages. Search has finished Successfully')
